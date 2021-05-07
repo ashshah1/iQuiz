@@ -14,19 +14,22 @@ struct ContentView: View {
          "Science": "beakers and what not",
          "Mathematics": "2 plus 2 is 5 right"]
     
+    let images = ["shield.fill", "heart.circle", "function"]
     var body: some View {
         NavigationView {
             List {
                 ForEach(categories.sorted(by: >), id: \.key) { key, value in
+                    HStack {
+                        Image(systemName: "questionmark.diamond.fill")
                     VStack(alignment: .leading) {
                         Text(key)
                             .font(.title3)
                             .foregroundColor(.blue)
                         Text(value)
                             .font(.body)
-                            .foregroundColor(.green)
                     }
                     .padding()
+                    }
                 }
             }
             
@@ -36,9 +39,10 @@ struct ContentView: View {
                     Button(action: {
                         self.showAlert = true
                     }, label: {
+                        Image(systemName: "gear")
                         Text("Settings")
                     }).alert(isPresented: $showAlert) { () -> Alert in
-                        Alert(title: Text("Settings"), message: Text("Settings go here"), dismissButton: .default(Text("Ok")))
+                        Alert(title: Text("Settings"), message: Text("Your settings go here"), dismissButton: .default(Text("Ok")))
                     }
                 }
             }

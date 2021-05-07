@@ -8,39 +8,41 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var showAlert = false;
+    @State var showAlert = false;
     let categories =
-        ["Marvel Superheroes": "A category about Marvel Superheroes",
+        ["Marvel Superheroes": "superheroes for 500 please, alex",
          "Science": "beakers and what not",
          "Mathematics": "2 plus 2 is 5 right"]
     
     var body: some View {
         NavigationView {
-            ZStack {
-                List {
-                    ForEach(categories.sorted(by: >), id: \.key) { key, value in
-                        VStack(alignment: .leading) {
-                            Text(key)
-                                .font(.title3)
-                                .foregroundColor(.blue)
-                            Text(value)
-                                .font(.body)
-                        }
-                        .padding()
+            List {
+                ForEach(categories.sorted(by: >), id: \.key) { key, value in
+                    VStack(alignment: .leading) {
+                        Text(key)
+                            .font(.title3)
+                            .foregroundColor(.blue)
+                        Text(value)
+                            .font(.body)
+                            .foregroundColor(.green)
+                    }
+                    .padding()
+                }
+            }
+            
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        self.showAlert = true
+                    }, label: {
+                        Text("Settings")
+                    }).alert(isPresented: $showAlert) { () -> Alert in
+                        Alert(title: Text("Settings"), message: Text("Settings go here"), dismissButton: .default(Text("Ok")))
                     }
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            self.showAlert = true
-                        }, label: {
-                            Text("settings")
-                        }).alert(isPresented: $showAlert) { () -> Alert in
-                            Alert(title: Text("Settings"), message: Text("Your settings go here"))
-                        }
-                    }
-                }                
             }
+            
         }
     }
 }

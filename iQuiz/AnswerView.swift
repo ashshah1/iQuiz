@@ -8,13 +8,26 @@
 import SwiftUI
 
 struct AnswerView: View {
-    var answer: String
+    var quiz: [String]
     var currAnswer: String
+    var index: Int
+    var answers: [String] // all answers for this category
+    var options: [[String]] // all options
     
     var body: some View {
-        VStack {
-            Text(answer)
-            Text(currAnswer)
+        NavigationView {
+            VStack {
+                if (answers[index] == currAnswer) {
+                    Text("nice job!")
+                } else {
+                    Text("sorry that's incorrect")
+                }
+                
+                
+                NavigationLink(destination: QuizView(quiz: quiz, answers: answers, options: options, index: (index + 1))) {
+                    Text("next q")
+                }.navigationBarBackButtonHidden(true)
+            }
         }
     }
 }

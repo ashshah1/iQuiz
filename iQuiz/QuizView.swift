@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct QuizView: View {
-    var quiz: [[String]]
+    var quiz: [String]
     // var questions: [String] // all qs for this category
     var answers: [String] // all answers for this category
-    var options: [String] // all options
+    var options: [[String]] // all options
     
     @State private var answer: String = ""
     @State var index: Int
@@ -20,22 +20,21 @@ struct QuizView: View {
     var body: some View {
         NavigationView {
             VStack {
-                
-                Text(quiz[index][0])
+                Text(quiz[index])
                     .font(.title3)
                 
                     Picker(selection: $answer, label: Text("Answer")) {
-                        ForEach(options, id:\.self) { option in
+                        ForEach(options[index], id:\.self) { option in
                             Text(option)
                         }
                         
                     }
                 
-                NavigationLink(destination: AnswerView(answer: answers[index], currAnswer: answer)) {
+                NavigationLink(destination: AnswerView(quiz: quiz, currAnswer: answer, index: index, answers: answers, options: options)) {
 //                    Button(action: {
 //                        self.submit = "submit"
 //                    }) {
-                        Text("submit!")
+                        Text("Submit!")
                 }.navigationBarBackButtonHidden(true)
                 }
             }

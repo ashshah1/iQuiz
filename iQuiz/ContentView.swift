@@ -10,26 +10,40 @@ import SwiftUI
 struct ContentView: View {
     @State var showAlert = false;
     @State var showQuiz = false;
-    let categories =
-        ["Marvel Superheroes": "superheroes for 500 please, alex",
-         "Science": "beakers and what not",
-         "Mathematics": "2 plus 2 is 5 right"]
     
-    let questions = [["What is the mitochondria?", "Another science question", "Another science question"], ["math amirite", "more math amirite", "and some more"], ["iron man", "scarlet witch", "thor"]]
-    // array - categories
-    // array - all questions
-    // array - strings of options for one questions
+    let categories = ["Science", "Mathematics", "Marvel Superheroes"]
+    let descrips = ["beakers and what not", "2 plus 2 is 5 right", "superheroes for 500 please, alex"]
+    
+//    let categories =
+//        ["Marvel Superheroes": "superheroes for 500 please, alex",
+//         "Science": "beakers and what not",
+//         "Mathematics": "2 plus 2 is 5 right"]
+    
+    let questions = [
+        ["What is the mitochondria?", "What is the first element of the periodic table?", "What is physics?"],
+        ["When do you use the quadratic formula?", "What is the smallest number?", "How many numbers are there?"],
+        ["Which of the following is not an Avenger?", "Who is Captain America?", "Thor is __"]]
+
     
     let options = [
-        [["science 1", "science 1", "science 1", "science 1"], ["science 2", "science 2", "science 2", "science 2"], ["science 3", "science 3", "science 3", "science 3"]],
-        [["math 1", "math 1", "math 1", "math 1"], ["math 2", "math 2", "math 2", "math 2"], ["math 3", "math 3", "math 3", "math 3"]],
-        [["marvel 1", "marvel 1", "marvel 1", "marvel 1"], ["marvel 2", "mmarvel 2", "marvel 2", "marvel 2"], ["marvel 3", "marvel 3", "marvel 3", "marvel 3"]]
+        [
+            ["the powerhouse of the cell", "heck if i know", "a dog breed", "a democratic senate candidate"],
+            ["hydrogen", "kerfuffle", "helium", "lithium"],
+            ["a made up subject", "study of maps", "study of oranges", "a type of coconut"]],
+        [
+            ["in multivariate calculus", "never", "on the SATs", "in geometry"],
+            ["0", "1", "3", "impossible to say"],
+            ["exactly 4", "1", "at least 12", "398"]],
+        [
+            ["iron man", "captain bulgaria", "captain marvel", "ant man"],
+            ["barack obama", "steve rogers", "bucky barnes", "megan calverley"],
+            ["a good movie", "a great movie", "a cinematic masterpiece", "a person"]]
         ]
     
     let answers = [
-        ["science 2", "science 1", "science 1"],
-        ["math 1", "math 2", "math 3"],
-        ["marvel 1", "marvel 1", "marvel 2"]
+        ["the powerhouse of the cell", "hydrogen", "a made up subject"],
+        ["on the SATs", "impossible to say", "at least 12"],
+        ["captain bulgaria", "steve rogers", "a person"]
     
         ]
     
@@ -39,16 +53,17 @@ struct ContentView: View {
         NavigationView {
             VStack{
             List {
-                ForEach(categories.sorted(by: >), id: \.key) { key, value in
+                
+                ForEach(categories.indices) { i in
                     HStack {
                         Image(systemName: "questionmark.diamond.fill")
                     VStack(alignment: .leading) {
-                        NavigationLink(destination: QuizView(quiz: questions, answers: answers[0], options: options[0][0], index: 0)) {
-                        Text(key)
+                        NavigationLink(destination: QuizView(quiz: questions[i], answers: answers[i], options: options[i], index: 0)) {
+                        Text(categories[i])
                             .font(.title3)
                             .foregroundColor(.blue)
                         }
-                        Text(value)
+                        Text(descrips[i])
                             .font(.body)
                     }
                     .padding()

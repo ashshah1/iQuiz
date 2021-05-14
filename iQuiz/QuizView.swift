@@ -18,6 +18,7 @@ struct QuizView: View {
     @State private var submit: String = ""
     
     var body: some View {
+        
         NavigationView {
             VStack {
                 Text(quiz[index])
@@ -35,10 +36,10 @@ struct QuizView: View {
 //                        self.submit = "submit"
 //                    }) {
                         Text("Submit!")
-                }.navigationBarBackButtonHidden(true)
+                }
                 }
             }
-        }
         
+    }
     //}
 }

@@ -15,6 +15,11 @@ struct AnswerView: View {
     var options: [[String]] // all options
     
     var body: some View {
+        if (index == quiz.count - 1) {
+            NavigationView {
+                Text("fin")
+            }
+        } else {
         NavigationView {
             VStack {
                 if (answers[index] == currAnswer) {
@@ -26,8 +31,9 @@ struct AnswerView: View {
                 
                 NavigationLink(destination: QuizView(quiz: quiz, answers: answers, options: options, index: (index + 1))) {
                     Text("next q")
-                }.navigationBarBackButtonHidden(true)
+                }
             }
+        }
         }
     }
 }

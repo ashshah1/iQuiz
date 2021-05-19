@@ -8,32 +8,44 @@
 import SwiftUI
 
 struct AnswerView: View {
-    var quiz: [String]
+    var quiz: Quiz
     var currAnswer: String
     var index: Int
-    var answers: [String] // all answers for this category
-    var options: [[String]] // all options
+    var score: Int
     
     var body: some View {
-        if (index == quiz.count - 1) {
+        let answerIndex = Int(quiz.questions[index].answer)!
+        
+        if (index == ((quiz.questions).count) - 1) {
             NavigationView {
-                Text("fin")
+                VStack {
+                    if (currAnswer == quiz.questions[index].answers[answerIndex - 1]) {
+                        Text("Nice Job!")
+                    } else {
+                        Text("Sorry, that's incorrect :(")
+                    }
+                    
+                    
+                    NavigationLink(destination: FinishView()) {
+                        Text("Finish")
+                    }
+                }
             }
         } else {
-        NavigationView {
-            VStack {
-                if (answers[index] == currAnswer) {
-                    Text("nice job!")
-                } else {
-                    Text("sorry that's incorrect")
-                }
-                
-                
-                NavigationLink(destination: QuizView(quiz: quiz, answers: answers, options: options, index: (index + 1))) {
-                    Text("next q")
+            NavigationView {
+                VStack {
+                    if (currAnswer == quiz.questions[index].answers[answerIndex - 1]) { // fix this to get index of curr answer and replace 1
+                        Text("Nice Job!")
+                    } else {
+                        Text("Sorry, that's incorrect :(")
+                    }
+                    
+                    
+                    NavigationLink(destination: QuizView(quiz: quiz, index: (index + 1))) {
+                        Text("Next")
+                    }
                 }
             }
-        }
         }
     }
 }

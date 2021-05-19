@@ -59,18 +59,6 @@ struct ContentView: View {
                 
             }
             .navigationBarTitleDisplayMode(.inline)
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button(action: {
-//                        self.showAlert = true
-//                    }, label: {
-//                        Image(systemName: "gear")
-//                        Text("Settings")
-//                    }).alert(isPresented: $showAlert) { () -> Alert in
-//                        Alert(title: Text("Settings"), message: Text("Your settings go here"), dismissButton: .default(Text("Ok")))
-//                    }
-//                }
-//            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -87,7 +75,7 @@ struct ContentView: View {
                         self.loadData()
                         showAlert = false
                     }) {
-                        Text("Check")
+                        Text("check now")
                     }
                 }
             }.onAppear(perform: loadData)

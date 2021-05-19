@@ -4,6 +4,10 @@
 //
 //  Created by Ashni Shah on 5/6/21.
 //
+// Citations
+// https://www.hackingwithswift.com/forums/swiftui/decoding-json-data/3024
+// https://www.kaleidosblog.com/swiftui-how-to-download-and-parse-json-data-and-display-in-a-list-using-the-swift-ui-previewprovider
+//
 
 import SwiftUI
 
@@ -13,14 +17,14 @@ struct Quiz: Identifiable, Codable {
     var title: String
     var desc: String
     var questions: [Question]
-
+    
 }
 
 struct Question: Identifiable, Codable {
     var id: String { text }
     let text: String
-    let answers: [String]
     let answer: String
+    let answers: [String]
 }
 
 
@@ -32,29 +36,41 @@ struct ContentView: View {
     
     
     var body: some View {
-
+        
         NavigationView {
             VStack{
                 List (quizzes, id: \.title) { quiz in
-                        HStack {
-                            Image(systemName: "questionmark.diamond.fill")
-                            VStack(alignment: .leading) {
-                                NavigationLink(destination: QuizView(quiz: quiz, index: 0)) {
-                                    Text(quiz.title)
-                                        .font(.title3)
-                                        .foregroundColor(.blue)
-                                }
-                                Text(quiz.desc)
-                                    .font(.body)
+                    HStack {
+                        Image(systemName: "questionmark.diamond.fill")
+                        VStack(alignment: .leading) {
+                            NavigationLink(destination: QuizView(quiz: quiz, index: 0)) {
+                                Text(quiz.title)
+                                    .font(.title3)
+                                    .foregroundColor(.blue)
                             }
-                            .padding()
+                            Text(quiz.desc)
+                                .font(.body)
                         }
-                    }.onAppear(perform: loadData)
-                    
+                        .padding()
+                    }
+                }.onAppear(perform: loadData)
+                
                 
                 
             }
             .navigationBarTitleDisplayMode(.inline)
+//            .toolbar {
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    Button(action: {
+//                        self.showAlert = true
+//                    }, label: {
+//                        Image(systemName: "gear")
+//                        Text("Settings")
+//                    }).alert(isPresented: $showAlert) { () -> Alert in
+//                        Alert(title: Text("Settings"), message: Text("Your settings go here"), dismissButton: .default(Text("Ok")))
+//                    }
+//                }
+//            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -62,11 +78,19 @@ struct ContentView: View {
                     }, label: {
                         Image(systemName: "gear")
                         Text("Settings")
-                    }).alert(isPresented: $showAlert) { () -> Alert in
-                        Alert(title: Text("Settings"), message: Text("Your settings go here"), dismissButton: .default(Text("Ok")))
+                    })
+                }
+            }.popover(isPresented: $showAlert) {
+                VStack {
+                    TextField("Enter a new data source", text: $dataURL)
+                    Button(action: {
+                        self.loadData()
+                        showAlert = false
+                    }) {
+                        Text("Check")
                     }
                 }
-            }
+            }.onAppear(perform: loadData)
         }
     }
 }
@@ -83,18 +107,33 @@ extension ContentView
         let request = URLRequest(url: url)
         URLSession.shared.dataTask(with: request) { data, response, error in
             
-            if let data = data {
-                if let response_obj = try? JSONDecoder().decode([Quiz].self, from: data) {
-                    
-                    DispatchQueue.main.async {
-                        self.quizzes = response_obj
+            do {
+                if let data = data {
+                    if let response_obj = try? JSONDecoder().decode([Quiz].self, from: data) {
+                        
+                        DispatchQueue.main.async {
+                            self.quizzes = response_obj
+                        }
                     }
                 }
+            } catch DecodingError.keyNotFound(let key, let context) {
+                Swift.print("could not find key \(key) in JSON: \(context.debugDescription)")
+            } catch DecodingError.valueNotFound(let type, let context) {
+                Swift.print("could not find type \(type) in JSON: \(context.debugDescription)")
+            } catch DecodingError.typeMismatch(let type, let context) {
+                Swift.print("type mismatch for type \(type) in JSON: \(context.debugDescription)")
+            } catch DecodingError.dataCorrupted(let context) {
+                Swift.print("data found to be corrupted in JSON: \(context.debugDescription)")
+            } catch let error as NSError {
+                NSLog("Error in read(from:ofType:) domain= \(error.domain), description= \(error.localizedDescription)")
             }
             
         }.resume()
     }
+    
 }
+
+
 
 
 

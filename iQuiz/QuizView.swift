@@ -38,7 +38,7 @@ struct QuizView: View {
 //                        self.submit = "submit"
 //                    }) {
                         Text("Submit!")
-                }
+                }.navigationBarBackButtonHidden(true)
                 }
             }
         
